@@ -667,7 +667,7 @@
         useKeyboard,
         useClasses,
         useA11y,
-      ], {slots})
+      ], {slots: context.slots})
     },
     beforeMount() {
       if (this.$root.constructor?.version?.match(/^2\./) || this.vueVersionMs === 2) {

@@ -3564,9 +3564,14 @@ function useClasses (props, context, dependencies)
     ...classes_.value,
   }));
 
+  const intersection = (a, b) => {
+    const setA = new Set(a);
+    return b.filter(value => setA.has(value));
+  };
+
   const showDropdown = computed(() => {
-    const isDropdownEmptyWhenNoOptions = slots.beforeList || slots.afterList || slots.noOptions || slots.noResults;
-    return !!(isOpen.value && showOptions.value && (!isDropdownEmptyWhenNoOptions && (!resolving.value || (resolving.value && fo.value.length))))
+    const isDropdownEmptyWhenNoOptions = intersection(Object.keys(slots), ['beforelist', 'afterlist', 'nooptions', 'noresults']).length == 0;
+    return !!(isOpen.value && showOptions.value && ((resolving.value && !isDropdownEmptyWhenNoOptions) || (!resolving.value && fo.value.length)))
   });
 
   const classList = computed(() => {
@@ -4359,7 +4364,7 @@ var script = {
         useKeyboard,
         useClasses,
         useA11y,
-      ], {slots})
+      ], {slots: context.slots})
     },
     beforeMount() {
       if (this.$root.constructor?.version?.match(/^2\./) || this.vueVersionMs === 2) {
