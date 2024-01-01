@@ -68,7 +68,7 @@
     "fraction.js": "^4.1.1",
     "jest": "^27.3.1",
     "jest-environment-jsdom-sixteen": "^1.0.3",
-    "node-sass": "^7.0.0",
+    "sass": "^1.69.6",
     "postcss": "^8.4.31",
     "rollup": "^2.34.2",
     "rollup-plugin-postcss": "^4.0.0",

@@ -3071,6 +3071,7 @@ function useDropdown (props, context, dep)
       return
     }
 
+    /* istanbul ignore next: popper mock */
     popper.value = createPopper(multiselect.value, dropdown.value, {
       strategy: hasFixedParent(multiselect.value) ? /* istanbul ignore next: UI feature */ 'fixed' : undefined,
       placement: openDirection.value,
@@ -3502,6 +3503,7 @@ function useClasses (props, context, dependencies)
   const resolving = dependencies.resolving;
   const fo = dependencies.fo;
   const placement = dependencies.placement;
+  const slots = dependencies.slots;
 
   // ============== COMPUTED ==============
 
@@ -3563,7 +3565,8 @@ function useClasses (props, context, dependencies)
   }));
 
   const showDropdown = computed(() => {
-    return !!(isOpen.value && showOptions.value && (!resolving.value || (resolving.value && fo.value.length)))
+    const isDropdownEmptyWhenNoOptions = slots.beforeList || slots.afterList || slots.noOptions || slots.noResults;
+    return !!(isOpen.value && showOptions.value && (!isDropdownEmptyWhenNoOptions && (!resolving.value || (resolving.value && fo.value.length))))
   });
 
   const classList = computed(() => {
@@ -4356,7 +4359,7 @@ var script = {
         useKeyboard,
         useClasses,
         useA11y,
-      ])
+      ], {slots})
     },
     beforeMount() {
       if (this.$root.constructor?.version?.match(/^2\./) || this.vueVersionMs === 2) {
